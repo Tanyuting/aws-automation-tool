@@ -1,0 +1,47 @@
+aws:
+  regions:
+    - us-east-1
+    - us-west-2
+    - eu-west-1
+    - ap-southeast-1
+    - ap-northeast-1
+  access_key_id: ${AWS_ACCESS_KEY_ID}
+  secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+ec2:
+  required_tags:
+    - Environment
+    - Owner
+    - Project
+  test_env_tags:
+    - Environment=test
+    - Environment=dev
+  auto_stop_schedule: "0 20 * * *"  # 每天20点
+s3:
+  compliance_rules:
+    - name: "no_public_access"
+      description: "存储桶不应公开访问"
+    - name: "encryption_at_rest"
+      description: "应启用静态加密"
+    - name: "versioning_enabled"
+      description: "应启用版本控制"
+vpc:
+  restricted_ports:
+    - 22    # SSH
+    - 3389  # RDP
+    - 1433  # SQL Server
+    - 1521  # Oracle
+metrics:
+  port: "8080"
+alerting:
+  enabled: true
+  email:
+    smtp_host: "smtp.company.com"
+    smtp_port: 587
+    from: "aws-automation@company.com"
+    to:
+      - "infra-team@company.com"
+  slack:
+    webhook_url: "${SLACK_WEBHOOK_URL}"
+logging:
+  level: "info"
+  format: "json"
